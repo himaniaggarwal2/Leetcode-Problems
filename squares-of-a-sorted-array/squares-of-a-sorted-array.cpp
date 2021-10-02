@@ -1,11 +1,16 @@
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
-        vector<int> rr;
-        for(int i=0;i<nums.size();i++){
-            rr.push_back(nums[i]*nums[i]);
+        vector<int> result;
+        priority_queue<int,vector<int>,greater<int>> heap;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            heap.push(nums[i]*nums[i]);
         }
-        std::sort(rr.begin(),rr.end());
-        return rr;
+        while(!heap.empty()){
+            result.push_back(heap.top());
+            heap.pop();
+        }
+        return result;
     }
 };
