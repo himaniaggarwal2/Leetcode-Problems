@@ -1,20 +1,21 @@
 class Solution {
 public:
-    int partitionDisjoint(vector<int>& arr) {
-        int n = arr.size();
-        int max = arr[0];
-        int tmp_max = arr[0];
-        int l = 0;
-        
-        for(int i=1;i<n;i++) {
-            if(max > arr[i]) {
-                l = i;
-                max = tmp_max;
-            }
-            else 
-                tmp_max = std::max(tmp_max, arr[i]);
+    int partitionDisjoint(vector<int>& nums) {
+        int n=nums.size();
+        int rightMin[100007];
+        rightMin[n]=INT_MAX;
+        for(int i=nums.size()-1;i>=0;i--){
+            rightMin[i]=std::min(rightMin[i+1],nums[i]);
         }
-        
-        return l + 1;
+        int leftMax=INT_MIN;
+        int ans=0;
+        for(int i=0;i<nums.size();i++){
+            leftMax=std::max(leftMax,nums[i]);
+            if(leftMax<=rightMin[i+1]){
+                ans=i;
+                break;
+            }
+        }
+        return ans+1;
     }
 };
