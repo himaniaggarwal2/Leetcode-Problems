@@ -8,40 +8,41 @@
  */
 class Solution {
 public:
-    int size(ListNode *root){
-        int count=1;
-        while(root->next!=NULL){
-            root=root->next;
-            count++;
-        }
-        // cout<<count<<endl;
-        return count;
+    ListNode* cycle(ListNode* head1){
+       if(head1==nullptr or head1->next==nullptr) return nullptr;
+       ListNode* slow=head1,*fast=head1;
+
+       while(fast!=nullptr and fast->next!=nullptr){
+           slow=slow->next;
+           fast=fast->next->next;
+
+           if(slow==fast) break;
+       }
+
+       if(slow!=fast) return nullptr;
+       
+       slow=head1;
+       while(slow!=fast){
+           slow=slow->next;
+           fast=fast->next;
+       }
+       return slow;
     }
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        ListNode *t1=headA;
-        ListNode *t2=headB;
-        
-        int sizeA= size(headA);
-        int sizeB = size(headB);
-        
-        int diff= abs(sizeA-sizeB);
-        
-        if(sizeA>sizeB){
-            for(int i=0;i<diff;i++){
-                t1=t1->next;
-            }
+    
+    ListNode *getIntersectionNode(ListNode *head1, ListNode *head2) {
+       if(head1==nullptr or head2==nullptr) return nullptr;
+    
+        ListNode* tail=head1;
+        while(tail->next!=nullptr){
+            tail=tail->next;
         }
-        else{
-            for(int i=0;i<diff;i++){
-                t2=t2->next;
-            }
-        }
-        
-        while(t1!=t2){
-            t1=t1->next;
-            t2=t2->next;
-        }
-        
-        return t1;
+
+        tail->next=head2;
+
+        ListNode *ans=cycle(head1);
+
+        tail->next=nullptr;
+
+        return ans;
     }
 };
